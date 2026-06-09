@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebMelior — Your Local Business, Upgraded.</title>
+  <meta name="description" content="WebMelior helps local businesses grow with professional websites, AI automations, and local SEO — no jargon, just results." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { DEFAULT: '#0F6E56', light: '#E1F5EE', accent: '#9FE1CB', dark: '#0A5240' },
+            brand: { dark: '#2C2C2A', bg: '#F1EFE8' },
+          },
+          fontFamily: {
+            display: ['"DM Serif Display"', 'Georgia', 'serif'],
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #F1EFE8;
+      color: #2C2C2A;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4 { font-family: 'DM Serif Display', Georgia, serif; }
+
+    /* Grain overlay */
+    .grain::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+    }
+
+    /* Only transform + opacity — never transition-all */
+    .ease-spring {
+      transition-property: transform, opacity;
+      transition-duration: 280ms;
+      transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .ease-color {
+      transition-property: color, background-color, border-color, box-shadow;
+      transition-duration: 180ms;
+      transition-timing-function: ease-out;
+    }
+
+    /* Teal-tinted layered shadows */
+    .shadow-teal-sm  { box-shadow: 0 1px 3px rgba(15,110,86,0.08), 0 4px 12px rgba(15,110,86,0.05); }
+    .shadow-teal-md  { box-shadow: 0 2px 8px rgba(15,110,86,0.10), 0 8px 24px rgba(15,110,86,0.08); }
+    .shadow-teal-lg  { box-shadow: 0 4px 16px rgba(15,110,86,0.13), 0 16px 48px rgba(15,110,86,0.10); }
+    .shadow-teal-xl  { box-shadow: 0 8px 32px rgba(15,110,86,0.18), 0 24px 64px rgba(15,110,86,0.12); }
+    .shadow-teal-btn { box-shadow: 0 2px 8px rgba(15,110,86,0.28), 0 6px 20px rgba(15,110,86,0.18); }
+
+    /* Floating nav — ui-ux-pro-max rule: top-4 spacing, not stuck to top-0 */
+    .nav-float {
+      background: rgba(241,239,232,0.90);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(15,110,86,0.10);
+      box-shadow: 0 2px 16px rgba(15,110,86,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    /* Pricing featured card */
+    .card-featured {
+      background: linear-gradient(150deg, #0F6E56 0%, #0A5240 100%);
+      box-shadow: 0 8px 32px rgba(15,110,86,0.32), 0 24px 64px rgba(15,110,86,0.18);
+    }
+
+    /* Form focus */
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(15,110,86,0.20);
+    }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(20px); }
+    .revealed {
+      opacity: 1;
+      transform: translateY(0);
+      transition-property: opacity, transform;
+      transition-duration: 520ms;
+      transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    /* ui-ux-pro-max: always respect prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body class="grain overflow-x-hidden">
+
+  <!-- ══════════════════════════════════════════════
+       NAV — floating pill (ui-ux-pro-max rule)
+  ══════════════════════════════════════════════ -->
+  <div class="fixed top-4 inset-x-0 z-50 px-4 sm:px-6">
+    <header class="nav-float max-w-6xl mx-auto rounded-2xl">
+      <nav class="px-5 sm:px-7 h-14 flex items-center justify-between" aria-label="Main navigation">
+
+        <a href="#" class="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 rounded-lg" aria-label="WebMelior — home">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 98" width="26" height="32" aria-hidden="true">
+            <defs>
+              <linearGradient id="wmNav" x1="0.25" y1="0" x2="0.75" y2="1">
+                <stop offset="0%" stop-color="#1A9A74"/>
+                <stop offset="100%" stop-color="#0A4D3C"/>
+              </linearGradient>
+            </defs>
+            <path d="M 40,93 C 22,74 12,59 12,38 A 28,28 0 0 1 68,38 C 68,59 58,74 40,93 Z" fill="url(#wmNav)"/>
+            <polyline points="24,56 40,42 56,56" fill="none" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="font-sans font-bold text-[16px] tracking-[-0.02em] text-brand-dark">
+            Web<span class="text-teal">Melior</span>
+          </span>
+        </a>
+
+        <ul class="hidden md:flex items-center gap-6 text-[13.5px] font-medium text-brand-dark/60" role="list">
+          <li><a href="#services" class="ease-color hover:text-teal focus-visible:text-teal focus-visible:outline-none">Services</a></li>
+          <li><a href="#how"      class="ease-color hover:text-teal focus-visible:text-teal focus-visible:outline-none">Process</a></li>
+          <li><a href="#pricing"  class="ease-color hover:text-teal focus-visible:text-teal focus-visible:outline-none">Pricing</a></li>
+          <li><a href="#contact"  class="ease-color hover:text-teal focus-visible:text-teal focus-visible:outline-none">Contact</a></li>
+        </ul>
+
+        <!-- min 44px touch target — ui-ux-pro-max rule -->
+        <a href="#contact"
+           class="ease-spring shadow-teal-btn hidden sm:inline-flex items-center gap-2 bg-teal text-white text-[13px] font-semibold px-4 py-2.5 rounded-full ease-color hover:bg-teal-dark focus-visible:bg-teal-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 active:scale-[0.97] cursor-pointer min-h-[44px]">
+          Book a free call
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M2 6.5h9M7 3L10.5 6.5 7 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+
+        <button id="menuBtn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu"
+                class="md:hidden p-2.5 cursor-pointer ease-color hover:opacity-70 focus-visible:opacity-70 focus-visible:outline-none active:scale-95 min-w-[44px] min-h-[44px] flex flex-col gap-[5px] items-center justify-center">
+          <span class="w-5 h-[1.5px] bg-brand-dark rounded-full"></span>
+          <span class="w-5 h-[1.5px] bg-brand-dark rounded-full"></span>
+          <span class="w-3 h-[1.5px] bg-brand-dark rounded-full"></span>
+        </button>
+      </nav>
+
+      <div id="mobileMenu" class="hidden border-t border-teal/10 px-5 py-5 flex flex-col gap-3 text-[15px] font-medium">
+        <a href="#services" class="ease-color hover:text-teal py-1" onclick="closeMenu()">Services</a>
+        <a href="#how"      class="ease-color hover:text-teal py-1" onclick="closeMenu()">Process</a>
+        <a href="#pricing"  class="ease-color hover:text-teal py-1" onclick="closeMenu()">Pricing</a>
+        <a href="#contact"  class="ease-color hover:text-teal py-1" onclick="closeMenu()">Contact</a>
+        <a href="#contact"
+           class="ease-spring shadow-teal-btn mt-2 inline-flex items-center justify-center gap-2 bg-teal text-white text-[13px] font-semibold px-4 py-3.5 rounded-full ease-color hover:bg-teal-dark active:scale-[0.97] cursor-pointer"
+           onclick="closeMenu()">
+          Book a free call
+        </a>
+      </div>
+    </header>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════ -->
+  <section id="hero" class="relative min-h-[100svh] flex items-center pt-28 pb-20 overflow-hidden">
+
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute top-[-15%] left-[-8%] w-[65vw] h-[65vw] rounded-full"
+           style="background:radial-gradient(circle, rgba(159,225,203,0.26) 0%, transparent 65%);"></div>
+      <div class="absolute bottom-[-5%] right-[-10%] w-[55vw] h-[55vw] rounded-full"
+           style="background:radial-gradient(circle, rgba(15,110,86,0.08) 0%, transparent 60%);"></div>
+      <div class="absolute top-[45%] left-[35%] w-[35vw] h-[35vw] rounded-full"
+           style="background:radial-gradient(circle, rgba(225,245,238,0.40) 0%, transparent 60%);"></div>
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-5 sm:px-8 w-full grid lg:grid-cols-[1fr_420px] gap-12 xl:gap-20 items-center">
+
+      <!-- Copy -->
+      <div class="reveal">
+        <div class="inline-flex items-center gap-2 bg-teal-light text-teal text-[11.5px] font-semibold tracking-widest uppercase px-3.5 py-1.5 rounded-full mb-8 shadow-teal-sm">
+          <span class="w-1.5 h-1.5 rounded-full bg-teal" aria-hidden="true"></span>
+          Now serving local businesses
+        </div>
+
+        <h1 class="text-[clamp(2.6rem,6.5vw,4.5rem)] leading-[1.05] tracking-[-0.03em] text-brand-dark mb-6">
+          Your local business,<br/>
+          <em class="not-italic" style="color:#0F6E56;">upgraded.</em>
+        </h1>
+
+        <!-- ui-ux-pro-max: minimum 16px body text -->
+        <p class="text-[clamp(1rem,2vw,1.125rem)] leading-[1.7] text-brand-dark/65 max-w-[480px] mb-10">
+          Fast websites, AI automations, and local SEO — built for the businesses that keep your community running. No jargon, no lock-in, just results.
+        </p>
+
+        <div class="flex flex-wrap gap-3 mb-10">
+          <a href="#contact"
+             class="ease-spring shadow-teal-btn inline-flex items-center gap-2.5 bg-teal text-white font-semibold text-[15px] px-6 py-3.5 rounded-full ease-color hover:bg-teal-dark focus-visible:bg-teal-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 active:scale-[0.97] cursor-pointer min-h-[44px]">
+            Book a free call
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+              <path d="M3 7.5h9M8 3.5L12 7.5l-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#services"
+             class="ease-spring inline-flex items-center gap-2.5 border border-teal/25 text-teal font-semibold text-[15px] px-6 py-3.5 rounded-full ease-color hover:bg-teal-light hover:border-teal/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 active:scale-[0.97] cursor-pointer min-h-[44px]">
+            See our services
+          </a>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] font-medium text-brand-dark/45">
+          <span class="flex items-center gap-1.5">
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            No lock-in contracts
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            Live in 2 weeks
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            Plain-English support
+          </span>
+        </div>
+      </div>
+
+      <!-- Hero visual -->
+      <div class="hidden lg:block reveal" style="transition-delay:140ms;">
+        <div class="relative">
+          <div class="shadow-teal-xl bg-white rounded-2xl overflow-hidden">
+            <!-- Browser chrome -->
+            <div class="flex items-center gap-1.5 px-4 py-3 bg-brand-bg border-b border-black/5">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-300/70" aria-hidden="true"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-300/70" aria-hidden="true"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-green-300/70" aria-hidden="true"></span>
+              <div class="flex-1 h-5 rounded-md bg-white/80 ml-2 border border-black/6 flex items-center px-2.5">
+                <span class="text-[10px] text-brand-dark/30 font-mono">yourbusiness.com</span>
+              </div>
+            </div>
+            <!-- Page mock -->
+            <div class="p-5">
+              <div class="bg-gradient-to-br from-teal-light to-[#f8fdfb] rounded-xl p-5 mb-4">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <div class="text-[10.5px] font-semibold text-teal mb-0.5">★ 4.9 · 87 reviews</div>
+                    <div class="text-[19px] font-display text-brand-dark leading-tight">Martinez<br/>Plumbing</div>
+                  </div>
+                  <div class="w-10 h-10 rounded-xl bg-teal/10 flex items-center justify-center flex-shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                      <path d="M10 2C6.7 2 4 4.7 4 8c0 4.7 6 10 6 10s6-5.3 6-10c0-3.3-2.7-6-6-6zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill="#0F6E56"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="text-[10px] text-brand-dark/45 mb-3">Serving the community since 2008</div>
+                <div class="h-7 rounded-full bg-teal flex items-center justify-center">
+                  <span class="text-white text-[10.5px] font-semibold">Call (555) 000-1234</span>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex gap-2"><div class="flex-1 h-2 rounded-full bg-brand-bg"></div><div class="w-1/2 h-2 rounded-full bg-brand-bg"></div></div>
+                <div class="flex gap-2"><div class="w-2/3 h-2 rounded-full bg-brand-bg"></div><div class="flex-1 h-2 rounded-full bg-brand-bg"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating badge: automation -->
+          <div class="absolute -top-3 -right-6 shadow-teal-md bg-white rounded-xl px-3.5 py-2.5 flex items-center gap-2.5 border border-teal/8">
+            <div class="w-8 h-8 rounded-full bg-teal-light flex items-center justify-center flex-shrink-0">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M7 1v2M7 11v2M1 7h2M11 7h2M3.2 3.2l1.4 1.4M9.4 9.4l1.4 1.4M3.2 10.8l1.4-1.4M9.4 4.6l1.4-1.4" stroke="#0F6E56" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <div class="text-[10.5px] font-semibold text-brand-dark">Review request sent</div>
+              <div class="text-[9.5px] text-brand-dark/45">Automated · 24h after visit</div>
+            </div>
+          </div>
+
+          <!-- Floating badge: SEO -->
+          <div class="absolute -bottom-3 -left-6 shadow-teal-md bg-white rounded-xl px-3.5 py-2.5 flex items-center gap-2.5 border border-teal/8">
+            <div class="w-8 h-8 rounded-full bg-teal-light flex items-center justify-center flex-shrink-0">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2 11l3-3.5 2.5 2L10 5l2 3" stroke="#0F6E56" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <div class="text-[10.5px] font-semibold text-brand-dark">+340% Google traffic</div>
+              <div class="text-[9.5px] text-brand-dark/45">vs. last quarter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-35" aria-hidden="true">
+      <span class="text-[9.5px] font-medium tracking-[0.2em] uppercase">Scroll</span>
+      <div class="w-px h-7 bg-gradient-to-b from-brand-dark to-transparent"></div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       SERVICES
+  ══════════════════════════════════════════════ -->
+  <section id="services" class="py-24 sm:py-32">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+      <div class="text-center mb-16 reveal">
+        <div class="inline-flex items-center gap-2 bg-teal-light text-teal text-[11.5px] font-semibold tracking-widest uppercase px-3.5 py-1.5 rounded-full mb-6">
+          What we do
+        </div>
+        <h2 class="text-[clamp(2rem,4.5vw,3.25rem)] tracking-[-0.03em] text-brand-dark mb-4">
+          Everything your business needs<br class="hidden sm:block"/> to compete online.
+        </h2>
+        <p class="text-brand-dark/60 text-[1rem] leading-[1.7] max-w-lg mx-auto">
+          Three focused services — done properly, not cheaply.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-5">
+
+        <!-- cursor-pointer on all cards — ui-ux-pro-max rule -->
+        <div class="reveal ease-spring shadow-teal-md bg-white rounded-2xl p-7 hover:shadow-teal-lg hover:-translate-y-1.5 cursor-default group">
+          <div class="w-11 h-11 rounded-xl bg-teal-light flex items-center justify-center mb-5 ease-color group-hover:bg-teal/10">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <rect x="2" y="3" width="16" height="12" rx="2" stroke="#0F6E56" stroke-width="1.6"/>
+              <path d="M2 7h16" stroke="#0F6E56" stroke-width="1.6" stroke-linecap="round"/>
+              <circle cx="5" cy="5" r="0.9" fill="#0F6E56"/><circle cx="7.5" cy="5" r="0.9" fill="#9FE1CB"/>
+              <path d="M6 11h8M6 13.5h5" stroke="#9FE1CB" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="text-[1.15rem] tracking-[-0.02em] text-brand-dark mb-2">Fast, modern websites</h3>
+          <p class="text-brand-dark/60 text-[0.9rem] leading-[1.7] mb-5">
+            A clean, mobile-first site that loads in under 2 seconds and converts visitors into calls and bookings.
+          </p>
+          <ul class="space-y-2.5 text-[0.85rem] text-brand-dark/65" role="list">
+            <li class="flex items-start gap-2"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Custom design, not a template</li>
+            <li class="flex items-start gap-2"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Contact forms + booking ready</li>
+            <li class="flex items-start gap-2"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Live in ~2 weeks</li>
+          </ul>
+        </div>
+
+        <div class="reveal ease-spring shadow-teal-md bg-white rounded-2xl p-7 hover:shadow-teal-lg hover:-translate-y-1.5 cursor-default group" style="transition-delay:80ms;">
+          <div class="w-11 h-11 rounded-xl bg-teal-light flex items-center justify-center mb-5 ease-color group-hover:bg-teal/10">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="3.5" stroke="#0F6E56" stroke-width="1.6"/>
+              <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.1 4.1l1.4 1.4M14.5 14.5l1.4 1.4M4.1 15.9l1.4-1.4M14.5 5.5l1.4-1.4" stroke="#9FE1CB" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="text-[1.15rem] tracking-[-0.02em] text-brand-dark mb-2">AI automations</h3>
+          <p class="text-brand-dark/60 text-[0.9rem] leading-[1.7] mb-5">
+            Follow-up emails, review requests, appointment reminders — running 24/7 without you lifting a finger.
+          </p>
+          <ul class="space-y-2.5 text-[0.85rem] text-brand-dark/65" role="list">
+            <li class="flex items-start gap-2"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Automatic review requests</li>
+            <li class="flex items-start gap-2"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Lead follow-ups in 5 minutes</li>
+            <li class="flex items-start gap-2"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly activity reports</li>
+          </ul>
+        </div>
+
+        <div class="reveal ease-spring shadow-teal-md bg-white rounded-2xl p-7 hover:shadow-teal-lg hover:-translate-y-1.5 cursor-default group" style="transition-delay:160ms;">
+          <div class="w-11 h-11 rounded-xl bg-teal-light flex items-center justify-center mb-5 ease-color group-hover:bg-teal/10">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="8" r="4" stroke="#0F6E56" stroke-width="1.6"/>
+              <path d="M10 12c0 0-5.5 3.5-5.5 6h11c0-2.5-5.5-6-5.5-6z" stroke="#0F6E56" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M13 8l2-3.5M15 4.5l2.5-.5" stroke="#9FE1CB" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="text-[1.15rem] tracking-[-0.02em] text-brand-dark mb-2">Local SEO</h3>
+          <p class="text-brand-dark/60 text-[0.9rem] leading-[1.7] mb-5">
+            Show up when people nearby search for what you do. Google Business, local keywords, and citation building.
+          </p>
+          <ul class="space-y-2.5 text-[0.85rem] text-brand-dark/65" role="list">
+            <li class="flex items-start gap-2"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Google Business optimization</li>
+            <li class="flex items-start gap-2"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>"Near me" keyword targeting</li>
+            <li class="flex items-start gap-2"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly ranking reports</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       HOW IT WORKS
+  ══════════════════════════════════════════════ -->
+  <section id="how" class="py-24 sm:py-32 relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0" style="background:radial-gradient(ellipse 70% 60% at 50% 50%, rgba(225,245,238,0.55) 0%, transparent 70%);"></div>
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="text-center mb-16 reveal">
+        <div class="inline-flex items-center gap-2 bg-white text-teal text-[11.5px] font-semibold tracking-widest uppercase px-3.5 py-1.5 rounded-full mb-6 shadow-teal-sm">
+          The process
+        </div>
+        <h2 class="text-[clamp(2rem,4.5vw,3.25rem)] tracking-[-0.03em] text-brand-dark mb-4">
+          Simple. Fast. Done right.
+        </h2>
+        <p class="text-brand-dark/60 text-[1rem] leading-[1.7] max-w-lg mx-auto">
+          We keep it simple so you're never left wondering what's happening.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 md:gap-6">
+        <div class="reveal flex flex-col items-center text-center md:relative">
+          <div class="hidden md:block absolute top-7 left-[calc(50%+44px)] right-0 h-px"
+               style="background:linear-gradient(90deg,#9FE1CB,transparent);" aria-hidden="true"></div>
+          <div class="w-14 h-14 rounded-full bg-teal flex items-center justify-center text-white text-[1.1rem] font-display shadow-teal-btn mb-6" aria-label="Step 1">1</div>
+          <h3 class="text-[1.05rem] tracking-[-0.02em] text-brand-dark mb-2">We learn your business</h3>
+          <p class="text-brand-dark/60 text-[0.875rem] leading-[1.7] max-w-xs">A 30-minute call — we ask about your goals, customers, and what's working (or not) right now.</p>
+        </div>
+        <div class="reveal flex flex-col items-center text-center md:relative" style="transition-delay:100ms;">
+          <div class="hidden md:block absolute top-7 left-[calc(50%+44px)] right-0 h-px"
+               style="background:linear-gradient(90deg,#9FE1CB,transparent);" aria-hidden="true"></div>
+          <div class="w-14 h-14 rounded-full bg-teal flex items-center justify-center text-white text-[1.1rem] font-display shadow-teal-btn mb-6" aria-label="Step 2">2</div>
+          <h3 class="text-[1.05rem] tracking-[-0.02em] text-brand-dark mb-2">We build &amp; launch</h3>
+          <p class="text-brand-dark/60 text-[0.875rem] leading-[1.7] max-w-xs">You review, approve, and we go live. Most projects are done in 2 weeks — no drag, no jargon.</p>
+        </div>
+        <div class="reveal flex flex-col items-center text-center" style="transition-delay:200ms;">
+          <div class="w-14 h-14 rounded-full bg-teal flex items-center justify-center text-white text-[1.1rem] font-display shadow-teal-btn mb-6" aria-label="Step 3">3</div>
+          <h3 class="text-[1.05rem] tracking-[-0.02em] text-brand-dark mb-2">You grow</h3>
+          <p class="text-brand-dark/60 text-[0.875rem] leading-[1.7] max-w-xs">More calls, more bookings, better reviews — and monthly reports so you always know the numbers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       SOCIAL PROOF
+  ══════════════════════════════════════════════ -->
+  <section id="proof" class="py-24 sm:py-32">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+      <div class="text-center mb-16 reveal">
+        <div class="inline-flex items-center gap-2 bg-teal-light text-teal text-[11.5px] font-semibold tracking-widest uppercase px-3.5 py-1.5 rounded-full mb-6">Results</div>
+        <h2 class="text-[clamp(2rem,4.5vw,3.25rem)] tracking-[-0.03em] text-brand-dark">
+          Real businesses.<br class="hidden sm:block"/> Real results.
+        </h2>
+      </div>
+
+      <!-- Stats — ui-ux-pro-max: provide aria-labels for screen readers -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-teal/10 rounded-2xl overflow-hidden mb-16 shadow-teal-sm reveal">
+        <div class="bg-brand-bg px-5 py-8 text-center">
+          <div class="text-[2.2rem] font-display tracking-[-0.03em] text-teal mb-1"><span aria-label="2 weeks">2 wks</span></div>
+          <div class="text-[0.775rem] text-brand-dark/55 font-medium">Average launch time</div>
+        </div>
+        <div class="bg-brand-bg px-5 py-8 text-center">
+          <div class="text-[2.2rem] font-display tracking-[-0.03em] text-teal mb-1"><span aria-label="3 times more">3×</span></div>
+          <div class="text-[0.775rem] text-brand-dark/55 font-medium">Avg. more Google calls</div>
+        </div>
+        <div class="bg-brand-bg px-5 py-8 text-center">
+          <div class="text-[2.2rem] font-display tracking-[-0.03em] text-teal mb-1"><span aria-label="4.9 out of 5 stars">4.9★</span></div>
+          <div class="text-[0.775rem] text-brand-dark/55 font-medium">Avg. client rating</div>
+        </div>
+        <div class="bg-brand-bg px-5 py-8 text-center">
+          <div class="text-[2.2rem] font-display tracking-[-0.03em] text-teal mb-1">100%</div>
+          <div class="text-[0.775rem] text-brand-dark/55 font-medium">No lock-in contracts</div>
+        </div>
+      </div>
+
+      <!-- Testimonials — quote marks for personality -->
+      <div class="grid md:grid-cols-3 gap-5">
+
+        <div class="reveal ease-spring shadow-teal-md bg-white rounded-2xl p-6 hover:shadow-teal-lg hover:-translate-y-0.5 cursor-default">
+          <div class="text-[3rem] leading-[0.8] font-display text-teal/15 mb-3 select-none" aria-hidden="true">"</div>
+          <div class="flex gap-0.5 mb-3" aria-label="5 out of 5 stars">
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+          </div>
+          <p class="text-brand-dark/75 text-[0.875rem] leading-[1.7] mb-5">Within a month our phone was ringing twice as much. The website looks way more professional than anything I could have done myself.</p>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-teal-light flex items-center justify-center text-teal text-[12px] font-semibold flex-shrink-0" aria-hidden="true">CM</div>
+            <div>
+              <div class="text-[13px] font-semibold text-brand-dark">Carlos M.</div>
+              <div class="text-[11px] text-brand-dark/45">Plumbing contractor</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal ease-spring shadow-teal-md bg-white rounded-2xl p-6 hover:shadow-teal-lg hover:-translate-y-0.5 cursor-default" style="transition-delay:80ms;">
+          <div class="text-[3rem] leading-[0.8] font-display text-teal/15 mb-3 select-none" aria-hidden="true">"</div>
+          <div class="flex gap-0.5 mb-3" aria-label="5 out of 5 stars">
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+          </div>
+          <p class="text-brand-dark/75 text-[0.875rem] leading-[1.7] mb-5">The automation that sends review requests after appointments? We went from 12 Google reviews to 87 in two months. Unreal.</p>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-teal-light flex items-center justify-center text-teal text-[12px] font-semibold flex-shrink-0" aria-hidden="true">SR</div>
+            <div>
+              <div class="text-[13px] font-semibold text-brand-dark">Sofia R.</div>
+              <div class="text-[11px] text-brand-dark/45">Hair salon owner</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal ease-spring shadow-teal-md bg-white rounded-2xl p-6 hover:shadow-teal-lg hover:-translate-y-0.5 cursor-default" style="transition-delay:160ms;">
+          <div class="text-[3rem] leading-[0.8] font-display text-teal/15 mb-3 select-none" aria-hidden="true">"</div>
+          <div class="flex gap-0.5 mb-3" aria-label="5 out of 5 stars">
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+            <svg class="text-teal" width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true"><path d="M6.5 1l1.5 3 3.3.5L9 6.8l.5 3.3-2.9-1.5L3.7 10l.5-3.3L2 4.5l3.3-.5z"/></svg>
+          </div>
+          <p class="text-brand-dark/75 text-[0.875rem] leading-[1.7] mb-5">I was nervous about the whole tech side of things. They explained everything in plain English — felt like talking to a neighbor, not a vendor.</p>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-teal-light flex items-center justify-center text-teal text-[12px] font-semibold flex-shrink-0" aria-hidden="true">DK</div>
+            <div>
+              <div class="text-[13px] font-semibold text-brand-dark">David K.</div>
+              <div class="text-[11px] text-brand-dark/45">HVAC company owner</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       PRICING
+  ══════════════════════════════════════════════ -->
+  <section id="pricing" class="py-24 sm:py-32 relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute bottom-0 left-0 w-[50vw] h-[40vw] rounded-full"
+           style="background:radial-gradient(circle, rgba(15,110,86,0.06) 0%, transparent 70%);"></div>
+      <div class="absolute top-0 right-0 w-[40vw] h-[40vw] rounded-full"
+           style="background:radial-gradient(circle, rgba(159,225,203,0.12) 0%, transparent 70%);"></div>
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="text-center mb-16 reveal">
+        <div class="inline-flex items-center gap-2 bg-teal-light text-teal text-[11.5px] font-semibold tracking-widest uppercase px-3.5 py-1.5 rounded-full mb-6">Pricing</div>
+        <h2 class="text-[clamp(2rem,4.5vw,3.25rem)] tracking-[-0.03em] text-brand-dark mb-4">
+          Straightforward pricing.<br class="hidden sm:block"/> No surprises.
+        </h2>
+        <p class="text-brand-dark/60 text-[1rem] leading-[1.7] max-w-md mx-auto">
+          Pick a plan or mix services. Every project starts with a free call.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-5 items-start">
+
+        <div class="reveal ease-spring shadow-teal-md bg-white rounded-2xl p-7 hover:shadow-teal-lg hover:-translate-y-0.5 cursor-default">
+          <div class="text-[10.5px] font-semibold tracking-widest uppercase text-brand-dark/40 mb-3">Starter</div>
+          <div class="text-[2.4rem] font-display tracking-[-0.03em] text-brand-dark mb-1">$799</div>
+          <div class="text-[0.775rem] text-brand-dark/45 mb-6">one-time · no monthly fees</div>
+          <ul class="space-y-3 text-[0.85rem] text-brand-dark/70 mb-8" role="list">
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>5-page custom website</li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Mobile-first design</li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Contact form + Google Maps</li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Hosted &amp; deployed</li>
+            <li class="flex items-start gap-2.5 opacity-30"><svg class="mt-0.5 flex-shrink-0" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M3 3l7 7M10 3l-7 7" stroke="#2C2C2A" stroke-width="1.4" stroke-linecap="round"/></svg><span>AI automations</span></li>
+            <li class="flex items-start gap-2.5 opacity-30"><svg class="mt-0.5 flex-shrink-0" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M3 3l7 7M10 3l-7 7" stroke="#2C2C2A" stroke-width="1.4" stroke-linecap="round"/></svg><span>SEO optimization</span></li>
+          </ul>
+          <a href="#contact" class="ease-spring block text-center border border-teal/30 text-teal font-semibold text-[13.5px] py-3 rounded-full ease-color hover:bg-teal-light hover:border-teal/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 active:scale-[0.98] cursor-pointer min-h-[44px] flex items-center justify-center">
+            Get started
+          </a>
+        </div>
+
+        <div class="reveal card-featured rounded-2xl p-7 text-white" style="transition-delay:80ms;">
+          <div class="flex items-center justify-between mb-3">
+            <div class="text-[10.5px] font-semibold tracking-widest uppercase opacity-65">Growth</div>
+            <div class="bg-white/20 text-white text-[9.5px] font-semibold tracking-wide uppercase px-2.5 py-1 rounded-full">Most popular</div>
+          </div>
+          <div class="text-[2.4rem] font-display tracking-[-0.03em] mb-1">$249<span class="text-[1.2rem] opacity-60">/mo</span></div>
+          <div class="text-[0.775rem] opacity-55 mb-6">everything in Starter, ongoing</div>
+          <ul class="space-y-3 text-[0.85rem] opacity-90 mb-8" role="list">
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="#9FE1CB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Website + unlimited edits</li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="#9FE1CB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Review request automation</li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="#9FE1CB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Local SEO setup</li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="#9FE1CB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly growth report</li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="#9FE1CB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority support</li>
+          </ul>
+          <a href="#contact" class="ease-spring block text-center bg-white text-teal font-semibold text-[13.5px] py-3 rounded-full ease-color hover:bg-teal-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal active:scale-[0.98] cursor-pointer min-h-[44px] flex items-center justify-center" style="box-shadow:0 2px 12px rgba(0,0,0,0.14);">
+            Get started
+          </a>
+        </div>
+
+        <div class="reveal ease-spring shadow-teal-md bg-white rounded-2xl p-7 hover:shadow-teal-lg hover:-translate-y-0.5 cursor-default" style="transition-delay:160ms;">
+          <div class="text-[10.5px] font-semibold tracking-widest uppercase text-brand-dark/40 mb-3">Pro</div>
+          <div class="text-[2.4rem] font-display tracking-[-0.03em] text-brand-dark mb-1">$449<span class="text-[1.2rem] text-brand-dark/40">/mo</span></div>
+          <div class="text-[0.775rem] text-brand-dark/45 mb-6">for businesses serious about growth</div>
+          <ul class="space-y-3 text-[0.85rem] text-brand-dark/70 mb-8" role="list">
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Growth</li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Full automation suite</li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Aggressive SEO targeting</li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Lead capture + CRM setup</li>
+            <li class="flex items-start gap-2.5"><svg class="mt-0.5 flex-shrink-0 text-teal" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5l3 3 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Weekly check-in call</li>
+          </ul>
+          <a href="#contact" class="ease-spring block text-center border border-teal/30 text-teal font-semibold text-[13.5px] py-3 rounded-full ease-color hover:bg-teal-light hover:border-teal/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 active:scale-[0.98] cursor-pointer min-h-[44px] flex items-center justify-center">
+            Get started
+          </a>
+        </div>
+
+      </div>
+      <p class="text-center text-[0.825rem] text-brand-dark/40 mt-8">
+        Not sure which fits? <a href="#contact" class="text-teal ease-color hover:underline focus-visible:underline focus-visible:outline-none">Book a free 30-min call</a> — no pitch, just a conversation.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       CONTACT
+  ══════════════════════════════════════════════ -->
+  <section id="contact" class="py-24 sm:py-32 relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute top-[-10%] right-[-5%] w-[55vw] h-[55vw] rounded-full"
+           style="background:radial-gradient(circle, rgba(159,225,203,0.18) 0%, transparent 65%);"></div>
+      <div class="absolute bottom-[-10%] left-[-5%] w-[40vw] h-[40vw] rounded-full"
+           style="background:radial-gradient(circle, rgba(15,110,86,0.07) 0%, transparent 65%);"></div>
+    </div>
+
+    <div class="relative max-w-2xl mx-auto px-5 sm:px-8">
+      <div class="text-center mb-12 reveal">
+        <div class="inline-flex items-center gap-2 bg-teal-light text-teal text-[11.5px] font-semibold tracking-widest uppercase px-3.5 py-1.5 rounded-full mb-6">Let's talk</div>
+        <h2 class="text-[clamp(2rem,4.5vw,3.25rem)] tracking-[-0.03em] text-brand-dark mb-4">Ready to grow?</h2>
+        <p class="text-brand-dark/60 text-[1rem] leading-[1.7]">
+          Fill this out and we'll follow up within one business day to schedule your free call.
+        </p>
+      </div>
+
+      <!-- All inputs have labels — ui-ux-pro-max form rule -->
+      <form id="contactForm" class="reveal shadow-teal-lg bg-white rounded-2xl p-7 sm:p-10 space-y-5" novalidate aria-label="Contact form">
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="name" class="block text-[12.5px] font-semibold text-brand-dark mb-1.5">Your name</label>
+            <input id="name" name="name" type="text" required autocomplete="name" placeholder="Jane Smith"
+                   class="w-full bg-brand-bg border border-teal/15 rounded-xl px-4 py-3 text-[14px] text-brand-dark placeholder:text-brand-dark/30 ease-color hover:border-teal/30 focus:border-teal/50 min-h-[44px]" />
+          </div>
+          <div>
+            <label for="email" class="block text-[12.5px] font-semibold text-brand-dark mb-1.5">Email address</label>
+            <input id="email" name="email" type="email" required autocomplete="email" placeholder="jane@example.com"
+                   class="w-full bg-brand-bg border border-teal/15 rounded-xl px-4 py-3 text-[14px] text-brand-dark placeholder:text-brand-dark/30 ease-color hover:border-teal/30 focus:border-teal/50 min-h-[44px]" />
+          </div>
+        </div>
+
+        <div>
+          <label for="business" class="block text-[12.5px] font-semibold text-brand-dark mb-1.5">Business type</label>
+          <select id="business" name="business" class="w-full bg-brand-bg border border-teal/15 rounded-xl px-4 py-3 text-[14px] text-brand-dark ease-color hover:border-teal/30 focus:border-teal/50 appearance-none cursor-pointer min-h-[44px]">
+            <option value="" disabled selected>Select your industry…</option>
+            <option>Restaurant / Food</option>
+            <option>Salon / Beauty</option>
+            <option>Home services (plumbing, HVAC, etc.)</option>
+            <option>Healthcare / Clinic</option>
+            <option>Retail</option>
+            <option>Fitness / Wellness</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="service" class="block text-[12.5px] font-semibold text-brand-dark mb-1.5">What are you interested in?</label>
+          <select id="service" name="service" class="w-full bg-brand-bg border border-teal/15 rounded-xl px-4 py-3 text-[14px] text-brand-dark ease-color hover:border-teal/30 focus:border-teal/50 appearance-none cursor-pointer min-h-[44px]">
+            <option value="" disabled selected>Pick a service…</option>
+            <option>Website design</option>
+            <option>AI automations</option>
+            <option>Local SEO</option>
+            <option>Growth plan (all three)</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="message" class="block text-[12.5px] font-semibold text-brand-dark mb-1.5">
+            Anything else? <span class="text-brand-dark/35 font-normal">(optional)</span>
+          </label>
+          <textarea id="message" name="message" rows="3" placeholder="Tell us a bit about your business and what you're trying to achieve…"
+                    class="w-full bg-brand-bg border border-teal/15 rounded-xl px-4 py-3 text-[14px] text-brand-dark placeholder:text-brand-dark/30 ease-color hover:border-teal/30 focus:border-teal/50 resize-none"></textarea>
+        </div>
+
+        <div id="formSuccess" class="hidden bg-teal-light text-teal text-[13.5px] font-medium px-5 py-4 rounded-xl items-center gap-3" role="alert" aria-live="polite">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" aria-hidden="true">
+            <circle cx="8.5" cy="8.5" r="7.5" stroke="#0F6E56" stroke-width="1.5"/>
+            <path d="M5 8.5l2.5 2.5 4.5-5" stroke="#0F6E56" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Got it! We'll be in touch within one business day.
+        </div>
+
+        <!-- Loading state on submit — ui-ux-pro-max rule -->
+        <button type="submit"
+                class="ease-spring shadow-teal-btn w-full bg-teal text-white font-semibold text-[14.5px] py-3.5 rounded-full ease-color hover:bg-teal-dark focus-visible:bg-teal-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2 min-h-[44px]">
+          Send message
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <p class="text-center text-[11px] text-brand-dark/35">No spam. No pressure. Unsubscribe any time.</p>
+      </form>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════ -->
+  <footer class="border-t border-teal/10 bg-brand-dark text-white/60">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 grid sm:grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="md:col-span-2">
+        <a href="#" class="flex items-center gap-2.5 mb-4 w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-accent focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark rounded-lg" aria-label="WebMelior home">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 98" width="22" height="27" aria-hidden="true">
+            <defs>
+              <linearGradient id="wmFoot" x1="0.25" y1="0" x2="0.75" y2="1">
+                <stop offset="0%" stop-color="#1A9A74"/>
+                <stop offset="100%" stop-color="#0A4D3C"/>
+              </linearGradient>
+            </defs>
+            <path d="M 40,93 C 22,74 12,59 12,38 A 28,28 0 0 1 68,38 C 68,59 58,74 40,93 Z" fill="url(#wmFoot)"/>
+            <polyline points="24,56 40,42 56,56" fill="none" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="font-sans font-bold text-[15px] tracking-[-0.02em] text-white">Web<span class="text-teal-accent">Melior</span></span>
+        </a>
+        <p class="text-[0.825rem] leading-[1.7] max-w-xs text-white/40">Your local business, upgraded. Websites, AI automations, and local SEO — done right.</p>
+      </div>
+      <div>
+        <div class="text-[10.5px] font-semibold tracking-widest uppercase text-white/25 mb-4">Services</div>
+        <ul class="space-y-2.5 text-[0.85rem]" role="list">
+          <li><a href="#services" class="ease-color hover:text-white focus-visible:text-white focus-visible:outline-none">Website design</a></li>
+          <li><a href="#services" class="ease-color hover:text-white focus-visible:text-white focus-visible:outline-none">AI automations</a></li>
+          <li><a href="#services" class="ease-color hover:text-white focus-visible:text-white focus-visible:outline-none">Local SEO</a></li>
+          <li><a href="#pricing"  class="ease-color hover:text-white focus-visible:text-white focus-visible:outline-none">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-[10.5px] font-semibold tracking-widest uppercase text-white/25 mb-4">Company</div>
+        <ul class="space-y-2.5 text-[0.85rem]" role="list">
+          <li><a href="#how"     class="ease-color hover:text-white focus-visible:text-white focus-visible:outline-none">How it works</a></li>
+          <li><a href="#proof"   class="ease-color hover:text-white focus-visible:text-white focus-visible:outline-none">Results</a></li>
+          <li><a href="#contact" class="ease-color hover:text-white focus-visible:text-white focus-visible:outline-none">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/[0.07] max-w-6xl mx-auto px-5 sm:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-white/25">
+      <span>&copy; 2026 WebMelior. All rights reserved.</span>
+      <span>Built with care for local businesses.</span>
+    </div>
+  </footer>
+
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('hidden') === false;
+      menuBtn.setAttribute('aria-expanded', String(open));
+    });
+    function closeMenu() {
+      mobileMenu.classList.add('hidden');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    // Smooth scroll — offset for floating nav
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        const id = link.getAttribute('href');
+        const target = document.querySelector(id);
+        if (target) {
+          e.preventDefault();
+          const offset = 80; // floating nav height + gap
+          const y = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Scroll reveal with IntersectionObserver
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('revealed');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Contact form — disable button on submit (ui-ux-pro-max: loading-buttons rule)
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('button[type="submit"]');
+      const success = document.getElementById('formSuccess');
+      btn.disabled = true;
+      btn.setAttribute('aria-busy', 'true');
+      btn.innerHTML = '<span>Sending…</span>';
+      setTimeout(() => {
+        success.classList.remove('hidden');
+        success.classList.add('flex');
+        btn.style.display = 'none';
+      }, 800);
+    });
+  </script>
+
+</body>
+</html>

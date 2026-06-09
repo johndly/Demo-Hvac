@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Environment variables — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# Temporary screenshots (auto-generated, not source files)
+temporary screenshots/
+
+# OS / editor artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+.vscode/settings.json
+
+# Build outputs
+dist/
+.next/
+.vercel/
+out/
+
+# Logs
+*.log
+npm-debug.log*

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 110" width="420" height="110" role="img" aria-label="WebMelior logo — dark variant">
+  <!-- Teal background card -->
+  <rect width="420" height="110" rx="10" fill="#0F6E56"/>
+
+  <!-- Pin icon: white body -->
+  <path d="M 46,102 C 20,82 13,65 13,45 A 33,33 0 0,0 46,12 A 33,33 0 0,0 79,45 C 79,65 72,82 46,102 Z"
+        fill="white" opacity="0.95"/>
+
+  <!-- Inner window circle — teal so pin reads as hollow -->
+  <circle cx="46" cy="44" r="20" fill="#0F6E56"/>
+
+  <!-- Lower chevron — white -->
+  <polyline points="34,51 46,38 58,51"
+            fill="none" stroke="white" stroke-width="3.5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Upper chevron — accent teal -->
+  <polyline points="36,43 46,30 56,43"
+            fill="none" stroke="#9FE1CB" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Wordmark — white with accent tspan -->
+  <text x="100" y="57"
+        font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-size="38" font-weight="700" letter-spacing="-1.8"
+        fill="white">Web<tspan fill="#9FE1CB">Melior</tspan></text>
+
+  <!-- Tagline — light teal -->
+  <text x="102" y="78"
+        font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-size="10.5" font-weight="500" letter-spacing="2.6"
+        fill="#E1F5EE">YOUR LOCAL BUSINESS, UPGRADED.</text>
+</svg>

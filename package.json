@@ -1,0 +1,9 @@
+{
+  "name": "webmelior-workspace",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "puppeteer": "^25.1.0"
+  }
+}

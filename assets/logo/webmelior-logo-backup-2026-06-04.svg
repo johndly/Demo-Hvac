@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 110" width="420" height="110" role="img" aria-label="WebMelior logo">
+  <defs>
+    <linearGradient id="pinGrad" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="#1A8A6C"/>
+      <stop offset="100%" stop-color="#0A5C46"/>
+    </linearGradient>
+    <filter id="pinShadow" x="-30%" y="-20%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#0F6E56" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <!-- Pin icon: teardrop body -->
+  <g filter="url(#pinShadow)">
+    <path d="M 46,102 C 20,82 13,65 13,45 A 33,33 0 0,0 46,12 A 33,33 0 0,0 79,45 C 79,65 72,82 46,102 Z"
+          fill="url(#pinGrad)"/>
+  </g>
+
+  <!-- Inner window circle -->
+  <circle cx="46" cy="44" r="20" fill="#E1F5EE"/>
+
+  <!-- Lower chevron — primary teal, bolder -->
+  <polyline points="34,51 46,38 58,51"
+            fill="none" stroke="#0F6E56" stroke-width="3.5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Upper chevron — accent teal, lighter -->
+  <polyline points="36,43 46,30 56,43"
+            fill="none" stroke="#9FE1CB" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Wordmark -->
+  <text x="100" y="57"
+        font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-size="38" font-weight="700" letter-spacing="-1.8"
+        fill="#2C2C2A">Web<tspan fill="#0F6E56">Melior</tspan></text>
+
+  <!-- Tagline -->
+  <text x="102" y="78"
+        font-family="system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-size="10.5" font-weight="500" letter-spacing="2.6"
+        fill="#0F6E56">YOUR LOCAL BUSINESS, UPGRADED.</text>
+</svg>

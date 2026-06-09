@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebMelior — Your Local Business, Upgraded</title>
+  <meta name="description" content="WebMelior builds fast websites, automates client follow-ups, and boosts local SEO for small businesses. Friendly, fast, and built to convert." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,800;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            tp:  '#0F6E56',
+            tl:  '#E1F5EE',
+            ta:  '#9FE1CB',
+            td:  '#0A5C46',
+            bdk: '#2C2C2A',
+            bbg: '#F1EFE8',
+          },
+          fontFamily: {
+            display: ['Fraunces', 'Georgia', 'serif'],
+            sans:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ── Grain texture ─────────────────────────────────────── */
+    .grain-overlay { position: relative; }
+    .grain-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.045;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .grain-overlay > * { position: relative; z-index: 2; }
+
+    /* ── Scroll reveal ─────────────────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition:
+        opacity  0.65s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    .delay-1 { transition-delay: 0.10s; }
+    .delay-2 { transition-delay: 0.20s; }
+    .delay-3 { transition-delay: 0.30s; }
+    .delay-4 { transition-delay: 0.42s; }
+
+    /* ── Nav ───────────────────────────────────────────────── */
+    #site-nav {
+      transition:
+        background-color 0.35s ease,
+        box-shadow       0.35s ease;
+    }
+    #site-nav.scrolled {
+      background-color: rgba(255,255,255,0.96);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 1px 0 rgba(15,110,86,0.08), 0 4px 20px rgba(15,110,86,0.07);
+    }
+
+    /* ── Card hover ────────────────────────────────────────── */
+    .card-lift {
+      transition:
+        transform  0.32s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .card-lift:hover {
+      transform: translateY(-6px);
+      box-shadow:
+        0 24px 56px -10px rgba(15,110,86,0.22),
+        0  6px 20px -4px rgba(15,110,86,0.12);
+    }
+
+    /* ── Buttons ───────────────────────────────────────────── */
+    .btn { transition: background-color 0.2s ease, opacity 0.2s ease; }
+    .btn:active { transform: scale(0.97); }
+
+    /* ── Scroll-cue bounce ─────────────────────────────────── */
+    @keyframes cue-bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(6px); }
+    }
+    .scroll-cue { animation: cue-bounce 2s ease-in-out infinite; }
+  </style>
+</head>
+
+<body class="bg-bbg font-sans text-bdk antialiased">
+
+<!-- ──────────────────────────────────────────────────────
+     NAV
+────────────────────────────────────────────────────── -->
+<nav id="site-nav" class="fixed inset-x-0 top-0 z-50 px-6 md:px-12">
+  <div class="max-w-6xl mx-auto flex items-center justify-between h-16">
+
+    <!-- Logo -->
+    <a href="#" aria-label="WebMelior home" class="flex items-center gap-2.5">
+      <svg viewBox="0 0 46 56" width="26" height="32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M23 54C10 42 5 33 5 22A18 18 0 0 0 23 4a18 18 0 0 0 18 18c0 11-5 20-18 32z" fill="#0F6E56"/>
+        <circle cx="23" cy="22" r="11" fill="#E1F5EE"/>
+        <polyline points="17,27 23,18 29,27" fill="none" stroke="#0F6E56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="18,21 23,12 28,21" fill="none" stroke="#9FE1CB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="font-display font-bold text-[1.2rem] tracking-tight text-bdk">
+        Web<span class="text-tp">Melior</span>
+      </span>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#services"     class="text-sm font-medium text-bdk/60 hover:text-tp focus-visible:text-tp" style="transition:color .2s ease">Services</a>
+      <a href="#how-it-works" class="text-sm font-medium text-bdk/60 hover:text-tp focus-visible:text-tp" style="transition:color .2s ease">How it works</a>
+      <a href="#work"         class="text-sm font-medium text-bdk/60 hover:text-tp focus-visible:text-tp" style="transition:color .2s ease">Work</a>
+      <a href="#contact"      class="text-sm font-medium text-bdk/60 hover:text-tp focus-visible:text-tp" style="transition:color .2s ease">Contact</a>
+    </div>
+
+    <!-- CTA -->
+    <a href="#contact" class="btn hidden md:inline-flex items-center gap-1.5 bg-tp text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-td focus-visible:ring-2 focus-visible:ring-tp focus-visible:ring-offset-2">
+      Get a free quote
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M1.5 6.5h10M8 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <!-- Hamburger -->
+    <button id="menu-btn" class="md:hidden p-2" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span class="block w-5 h-0.5 bg-bdk mb-1.5"></span>
+      <span class="block w-5 h-0.5 bg-bdk mb-1.5"></span>
+      <span class="block w-5 h-0.5 bg-bdk"></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-tl/40 px-6 py-6 space-y-4">
+    <a href="#services"     class="block text-sm font-medium text-bdk/70 hover:text-tp">Services</a>
+    <a href="#how-it-works" class="block text-sm font-medium text-bdk/70 hover:text-tp">How it works</a>
+    <a href="#work"         class="block text-sm font-medium text-bdk/70 hover:text-tp">Work</a>
+    <a href="#contact"      class="block text-sm font-medium text-bdk/70 hover:text-tp">Contact</a>
+    <a href="#contact"      class="btn inline-flex items-center gap-1.5 bg-tp text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-td">
+      Get a free quote
+    </a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ──────────────────────────────────────────────────────
+     HERO
+────────────────────────────────────────────────────── -->
+<section id="hero" class="grain-overlay relative min-h-screen flex items-center overflow-hidden"
+  style="background: radial-gradient(ellipse 90% 70% at 15% 50%, #1E9370 0%, #0F6E56 45%, #083D30 100%);">
+
+  <!-- Decorative blobs -->
+  <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none opacity-20"
+    style="background: radial-gradient(circle, #9FE1CB, transparent 70%); transform: translate(35%, -35%);"></div>
+  <div class="absolute bottom-0 left-1/3 w-64 h-64 rounded-full pointer-events-none opacity-10"
+    style="background: radial-gradient(circle, #E1F5EE, transparent 70%);"></div>
+
+  <div class="max-w-6xl mx-auto px-6 md:px-12 w-full pt-28 pb-20 grid md:grid-cols-2 gap-16 items-center">
+
+    <!-- Copy -->
+    <div>
+      <!-- Availability badge -->
+      <div class="fade-up inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white/85 text-xs font-medium px-3.5 py-1.5 rounded-full mb-8">
+        <span class="w-1.5 h-1.5 rounded-full bg-ta" style="animation: pulse 2s ease infinite"></span>
+        Available for new clients
+      </div>
+
+      <h1 class="fade-up delay-1 font-display font-bold text-white leading-[1.04] tracking-tight mb-6"
+        style="font-size: clamp(2.8rem, 6vw, 5rem);">
+        Your local<br>
+        <em class="not-italic" style="color:#9FE1CB;">business,</em><br>
+        upgraded.
+      </h1>
+
+      <p class="fade-up delay-2 text-white/70 text-lg leading-[1.75] mb-10 max-w-md">
+        We build fast, beautiful websites — and automate the follow-ups, reminders, and review requests that keep customers coming back.
+      </p>
+
+      <div class="fade-up delay-3 flex flex-wrap gap-3">
+        <a href="#contact"
+          class="btn inline-flex items-center gap-2 bg-white text-tp font-semibold text-sm px-6 py-3.5 rounded-full hover:bg-tl focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-tp">
+          Get a free quote
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M1.5 6.5h10M8 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#work"
+          class="btn inline-flex items-center gap-2 border border-white/25 text-white font-medium text-sm px-6 py-3.5 rounded-full hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/40">
+          See our work
+        </a>
+      </div>
+
+      <!-- Social proof -->
+      <div class="fade-up delay-4 flex items-center gap-4 mt-12">
+        <div class="flex -space-x-2.5">
+          <img src="https://placehold.co/36x36/E1F5EE/0F6E56?text=J" class="w-9 h-9 rounded-full ring-2 ring-white/30 object-cover" alt="" />
+          <img src="https://placehold.co/36x36/9FE1CB/0A5C46?text=M" class="w-9 h-9 rounded-full ring-2 ring-white/30 object-cover" alt="" />
+          <img src="https://placehold.co/36x36/F1EFE8/2C2C2A?text=S" class="w-9 h-9 rounded-full ring-2 ring-white/30 object-cover" alt="" />
+        </div>
+        <p class="text-white/60 text-sm">
+          Trusted by <strong class="text-white font-semibold">12+ local businesses</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- Hero card mockup -->
+    <div class="fade-up delay-2 relative hidden md:flex items-center justify-center">
+      <div class="relative bg-white rounded-2xl overflow-hidden w-full max-w-sm"
+        style="box-shadow: 0 40px 90px -20px rgba(0,0,0,0.40), 0 10px 36px -8px rgba(0,0,0,0.22);">
+        <img src="https://placehold.co/480x280/0F6E56/E1F5EE?text=Your+New+Website" class="w-full" alt="Sample website mockup" />
+        <div class="p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <p class="font-display font-bold text-bdk text-base leading-tight">Sunrise Bakery</p>
+              <p class="text-bdk/45 text-xs">sunrisebakery.com</p>
+            </div>
+            <span class="bg-tl text-tp text-xs font-semibold px-2.5 py-1 rounded-full">Live ✓</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <div class="bg-bbg rounded-xl p-2.5 text-center">
+              <p class="font-bold text-bdk text-sm">4.9★</p>
+              <p class="text-bdk/45 text-[11px]">Google</p>
+            </div>
+            <div class="bg-bbg rounded-xl p-2.5 text-center">
+              <p class="font-bold text-bdk text-sm">+38%</p>
+              <p class="text-bdk/45 text-[11px]">Calls</p>
+            </div>
+            <div class="bg-bbg rounded-xl p-2.5 text-center">
+              <p class="font-bold text-bdk text-sm">2 wks</p>
+              <p class="text-bdk/45 text-[11px]">Delivered</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating notification -->
+      <div class="absolute -bottom-5 -left-10 bg-white rounded-2xl px-4 py-3 flex items-center gap-3"
+        style="box-shadow: 0 8px 32px rgba(15,110,86,0.20), 0 2px 8px rgba(15,110,86,0.10);">
+        <div class="w-9 h-9 bg-tl rounded-xl flex items-center justify-center flex-shrink-0">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" aria-hidden="true">
+            <path d="M8.5 1.5l2.06 4.17 4.6.67-3.33 3.24.79 4.58-4.12-2.17-4.12 2.17.79-4.58L1.84 6.34l4.6-.67z"
+              fill="#0F6E56" stroke="#0F6E56" stroke-width="0.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-bdk">New Google review</p>
+          <p class="text-[11px] text-bdk/45 mt-0.5">"Best bakery in town!" · just now</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll cue -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/35 scroll-cue">
+    <p class="text-[10px] tracking-[0.2em] uppercase">Scroll</p>
+    <svg width="14" height="20" viewBox="0 0 14 20" fill="none" aria-hidden="true">
+      <path d="M7 3v12M2 11l5 6 5-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────
+     SERVICES
+────────────────────────────────────────────────────── -->
+<section id="services" class="py-24 bg-bbg">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+
+    <div class="mb-14 fade-up">
+      <p class="text-tp text-[11px] font-semibold tracking-[0.18em] uppercase mb-3">What we do</p>
+      <h2 class="font-display font-bold text-bdk text-4xl md:text-5xl leading-[1.1] tracking-tight">
+        Everything your<br>business needs online.
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5">
+
+      <!-- Websites -->
+      <div class="card-lift bg-white rounded-2xl p-8 fade-up"
+        style="box-shadow: 0 4px 28px -4px rgba(15,110,86,0.10), 0 1px 4px rgba(15,110,86,0.06);">
+        <div class="w-12 h-12 bg-tl rounded-2xl flex items-center justify-center mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="14" rx="2" stroke="#0F6E56" stroke-width="1.75"/>
+            <path d="M3 8h18" stroke="#0F6E56" stroke-width="1.75"/>
+            <circle cx="6.5" cy="6" r="0.8" fill="#9FE1CB"/>
+            <circle cx="9.2" cy="6" r="0.8" fill="#9FE1CB"/>
+            <path d="M7 12h10M7 15h6" stroke="#9FE1CB" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold text-bdk text-xl mb-2.5">Custom Websites</h3>
+        <p class="text-bdk/55 text-sm leading-[1.75]">A fast, mobile-first site designed to convert visitors into paying customers. Delivered in two weeks — not two months.</p>
+      </div>
+
+      <!-- Automations -->
+      <div class="card-lift bg-white rounded-2xl p-8 fade-up delay-1"
+        style="box-shadow: 0 4px 28px -4px rgba(15,110,86,0.10), 0 1px 4px rgba(15,110,86,0.06);">
+        <div class="w-12 h-12 bg-tl rounded-2xl flex items-center justify-center mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"
+              stroke="#9FE1CB" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="3.5" stroke="#0F6E56" stroke-width="1.75"/>
+            <circle cx="12" cy="12" r="1.2" fill="#0F6E56"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold text-bdk text-xl mb-2.5">AI Automations</h3>
+        <p class="text-bdk/55 text-sm leading-[1.75]">Automated follow-ups, appointment reminders, and review requests — running 24/7 so you never miss a lead or lose a repeat customer.</p>
+      </div>
+
+      <!-- SEO -->
+      <div class="card-lift bg-white rounded-2xl p-8 fade-up delay-2"
+        style="box-shadow: 0 4px 28px -4px rgba(15,110,86,0.10), 0 1px 4px rgba(15,110,86,0.06);">
+        <div class="w-12 h-12 bg-tl rounded-2xl flex items-center justify-center mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+              stroke="#0F6E56" stroke-width="1.75" stroke-linejoin="round"/>
+            <circle cx="12" cy="9" r="2.5" stroke="#9FE1CB" stroke-width="1.6"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold text-bdk text-xl mb-2.5">Local SEO</h3>
+        <p class="text-bdk/55 text-sm leading-[1.75]">Show up at the top when locals search for what you do. We handle your Google Business Profile, citations, and on-page optimization.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────
+     HOW IT WORKS
+────────────────────────────────────────────────────── -->
+<section id="how-it-works" class="py-24 bg-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+
+    <div class="mb-16 fade-up">
+      <p class="text-tp text-[11px] font-semibold tracking-[0.18em] uppercase mb-3">How it works</p>
+      <h2 class="font-display font-bold text-bdk text-4xl md:text-5xl leading-[1.1] tracking-tight">
+        Up and running<br>in 2 weeks.
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-10">
+
+      <div class="fade-up">
+        <div class="w-10 h-10 bg-tp text-white font-bold text-sm rounded-full flex items-center justify-center mb-5">1</div>
+        <h3 class="font-display font-bold text-bdk text-xl mb-2">Free 30-min call</h3>
+        <p class="text-bdk/55 text-sm leading-[1.75]">We learn about your business, your goals, and what's holding you back online. No pitch — just listening.</p>
+      </div>
+
+      <div class="fade-up delay-1">
+        <div class="w-10 h-10 bg-tp text-white font-bold text-sm rounded-full flex items-center justify-center mb-5">2</div>
+        <h3 class="font-display font-bold text-bdk text-xl mb-2">We build it fast</h3>
+        <p class="text-bdk/55 text-sm leading-[1.75]">You review a live preview before anything goes public. Two rounds of edits included — no hourly-rate surprises.</p>
+      </div>
+
+      <div class="fade-up delay-2">
+        <div class="w-10 h-10 bg-tp text-white font-bold text-sm rounded-full flex items-center justify-center mb-5">3</div>
+        <h3 class="font-display font-bold text-bdk text-xl mb-2">You grow</h3>
+        <p class="text-bdk/55 text-sm leading-[1.75]">Your site goes live. Automations kick in. We check in monthly — you're never left on your own after launch.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────
+     WORK / PORTFOLIO
+────────────────────────────────────────────────────── -->
+<section id="work" class="py-24 bg-bbg">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 fade-up">
+      <div>
+        <p class="text-tp text-[11px] font-semibold tracking-[0.18em] uppercase mb-3">Our work</p>
+        <h2 class="font-display font-bold text-bdk text-4xl md:text-5xl leading-[1.1] tracking-tight">
+          Clients who<br>trusted us.
+        </h2>
+      </div>
+      <a href="#contact"
+        class="btn self-start md:self-auto inline-flex items-center gap-1.5 border border-tp/30 text-tp text-sm font-medium px-5 py-2.5 rounded-full hover:bg-tl focus-visible:ring-2 focus-visible:ring-tp">
+        Start your project →
+      </a>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <!-- Card 1 -->
+      <div class="card-lift group bg-white rounded-2xl overflow-hidden fade-up"
+        style="box-shadow: 0 4px 24px -4px rgba(15,110,86,0.10);">
+        <div class="relative overflow-hidden h-48">
+          <img src="https://placehold.co/480x240/0F6E56/E1F5EE?text=Sunrise+Bakery"
+            class="w-full h-full object-cover"
+            style="transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);"
+            alt="Sunrise Bakery website" />
+          <div class="absolute inset-0 bg-gradient-to-t from-bdk/60 via-transparent to-transparent opacity-0 group-hover:opacity-100"
+            style="transition: opacity 0.3s ease;"></div>
+        </div>
+        <div class="p-5">
+          <span class="inline-block bg-tl text-tp text-[11px] font-semibold px-2.5 py-1 rounded-full mb-2">Website + SEO</span>
+          <h3 class="font-display font-bold text-bdk text-lg">Sunrise Bakery</h3>
+          <p class="text-bdk/45 text-sm mt-0.5">+38% inbound calls · 4.9★ Google</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card-lift group bg-white rounded-2xl overflow-hidden fade-up delay-1"
+        style="box-shadow: 0 4px 24px -4px rgba(15,110,86,0.10);">
+        <div class="relative overflow-hidden h-48">
+          <img src="https://placehold.co/480x240/9FE1CB/0A5C46?text=Lux+Salon"
+            class="w-full h-full object-cover"
+            style="transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);"
+            alt="Lux Salon website" />
+          <div class="absolute inset-0 bg-gradient-to-t from-bdk/60 via-transparent to-transparent opacity-0 group-hover:opacity-100"
+            style="transition: opacity 0.3s ease;"></div>
+        </div>
+        <div class="p-5">
+          <span class="inline-block bg-tl text-tp text-[11px] font-semibold px-2.5 py-1 rounded-full mb-2">Website + Automations</span>
+          <h3 class="font-display font-bold text-bdk text-lg">Lux Salon & Spa</h3>
+          <p class="text-bdk/45 text-sm mt-0.5">60% fewer no-shows · auto reminders</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card-lift group bg-white rounded-2xl overflow-hidden fade-up delay-2"
+        style="box-shadow: 0 4px 24px -4px rgba(15,110,86,0.10);">
+        <div class="relative overflow-hidden h-48">
+          <img src="https://placehold.co/480x240/E1F5EE/0F6E56?text=FixRight+Plumbing"
+            class="w-full h-full object-cover"
+            style="transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);"
+            alt="FixRight Plumbing website" />
+          <div class="absolute inset-0 bg-gradient-to-t from-bdk/60 via-transparent to-transparent opacity-0 group-hover:opacity-100"
+            style="transition: opacity 0.3s ease;"></div>
+        </div>
+        <div class="p-5">
+          <span class="inline-block bg-tl text-tp text-[11px] font-semibold px-2.5 py-1 rounded-full mb-2">Local SEO</span>
+          <h3 class="font-display font-bold text-bdk text-lg">FixRight Plumbing</h3>
+          <p class="text-bdk/45 text-sm mt-0.5">Page 1 Google · 2× organic leads</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────
+     TESTIMONIALS
+────────────────────────────────────────────────────── -->
+<section id="testimonials" class="grain-overlay relative py-24 overflow-hidden"
+  style="background: radial-gradient(ellipse 110% 90% at 50% 50%, #1E9370 0%, #0F6E56 55%, #083D30 100%);">
+  <div class="absolute top-0 right-0 w-96 h-96 rounded-full pointer-events-none opacity-15"
+    style="background: radial-gradient(circle, #9FE1CB, transparent 70%); transform: translate(25%,-25%);"></div>
+
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+
+    <div class="mb-12 fade-up">
+      <p class="text-ta text-[11px] font-semibold tracking-[0.18em] uppercase mb-3">Testimonials</p>
+      <h2 class="font-display font-bold text-white text-4xl md:text-5xl leading-[1.1] tracking-tight">
+        What our clients say.
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-5">
+
+      <div class="bg-white/10 border border-white/15 rounded-2xl p-8 backdrop-blur-sm fade-up">
+        <!-- Stars -->
+        <div class="flex gap-1 mb-5" aria-label="5 stars">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#9FE1CB" aria-hidden="true"><path d="M8 1l1.8 3.65 4.03.58-2.92 2.84.69 4.02L8 10.1l-3.6 1.99.69-4.02L2.17 5.23l4.03-.58z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#9FE1CB" aria-hidden="true"><path d="M8 1l1.8 3.65 4.03.58-2.92 2.84.69 4.02L8 10.1l-3.6 1.99.69-4.02L2.17 5.23l4.03-.58z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#9FE1CB" aria-hidden="true"><path d="M8 1l1.8 3.65 4.03.58-2.92 2.84.69 4.02L8 10.1l-3.6 1.99.69-4.02L2.17 5.23l4.03-.58z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#9FE1CB" aria-hidden="true"><path d="M8 1l1.8 3.65 4.03.58-2.92 2.84.69 4.02L8 10.1l-3.6 1.99.69-4.02L2.17 5.23l4.03-.58z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#9FE1CB" aria-hidden="true"><path d="M8 1l1.8 3.65 4.03.58-2.92 2.84.69 4.02L8 10.1l-3.6 1.99.69-4.02L2.17 5.23l4.03-.58z"/></svg>
+        </div>
+        <blockquote class="text-white/88 text-base leading-[1.8] mb-6">
+          "WebMelior had our new site live in 10 days. We were getting calls from the site within the first week. Absolutely worth it — and they were super easy to work with."
+        </blockquote>
+        <div class="flex items-center gap-3">
+          <img src="https://placehold.co/40x40/E1F5EE/0F6E56?text=JL" class="w-10 h-10 rounded-full object-cover" alt="Janet L." />
+          <div>
+            <p class="text-white font-semibold text-sm">Janet L.</p>
+            <p class="text-white/45 text-xs mt-0.5">Owner, Sunrise Bakery</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white/10 border border-white/15 rounded-2xl p-8 backdrop-blur-sm fade-up delay-1">
+        <div class="flex gap-1 mb-5" aria-label="5 stars">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#9FE1CB" aria-hidden="true"><path d="M8 1l1.8 3.65 4.03.58-2.92 2.84.69 4.02L8 10.1l-3.6 1.99.69-4.02L2.17 5.23l4.03-.58z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#9FE1CB" aria-hidden="true"><path d="M8 1l1.8 3.65 4.03.58-2.92 2.84.69 4.02L8 10.1l-3.6 1.99.69-4.02L2.17 5.23l4.03-.58z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#9FE1CB" aria-hidden="true"><path d="M8 1l1.8 3.65 4.03.58-2.92 2.84.69 4.02L8 10.1l-3.6 1.99.69-4.02L2.17 5.23l4.03-.58z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#9FE1CB" aria-hidden="true"><path d="M8 1l1.8 3.65 4.03.58-2.92 2.84.69 4.02L8 10.1l-3.6 1.99.69-4.02L2.17 5.23l4.03-.58z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#9FE1CB" aria-hidden="true"><path d="M8 1l1.8 3.65 4.03.58-2.92 2.84.69 4.02L8 10.1l-3.6 1.99.69-4.02L2.17 5.23l4.03-.58z"/></svg>
+        </div>
+        <blockquote class="text-white/88 text-base leading-[1.8] mb-6">
+          "The automated appointment reminders cut our no-shows in half the first month. I didn't even know this kind of thing was possible for a small salon like ours."
+        </blockquote>
+        <div class="flex items-center gap-3">
+          <img src="https://placehold.co/40x40/9FE1CB/0A5C46?text=MS" class="w-10 h-10 rounded-full object-cover" alt="Maria S." />
+          <div>
+            <p class="text-white font-semibold text-sm">Maria S.</p>
+            <p class="text-white/45 text-xs mt-0.5">Owner, Lux Salon & Spa</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────
+     CONTACT
+────────────────────────────────────────────────────── -->
+<section id="contact" class="py-24 bg-white">
+  <div class="max-w-xl mx-auto px-6 md:px-12">
+
+    <div class="text-center mb-10 fade-up">
+      <p class="text-tp text-[11px] font-semibold tracking-[0.18em] uppercase mb-4">Get started</p>
+      <h2 class="font-display font-bold text-bdk text-4xl md:text-5xl leading-[1.1] tracking-tight mb-4">
+        Ready to upgrade<br>your business?
+      </h2>
+      <p class="text-bdk/55 text-base leading-[1.75]">Fill in the form and we'll reply within one business day — no pushy sales call, just a friendly chat.</p>
+    </div>
+
+    <form id="contact-form" class="space-y-4 fade-up delay-1" onsubmit="handleSubmit(event)" novalidate>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label for="f-name" class="block text-xs font-medium text-bdk/60 mb-1.5 uppercase tracking-wide">Your name</label>
+          <input id="f-name" name="name" type="text" required placeholder="Jane Smith"
+            class="w-full rounded-xl border border-bdk/12 bg-bbg px-4 py-3 text-sm text-bdk placeholder:text-bdk/30 focus:outline-none focus:ring-2 focus:ring-tp/35 focus:border-tp"
+            style="transition: border-color .2s ease, box-shadow .2s ease;" />
+        </div>
+        <div>
+          <label for="f-biz" class="block text-xs font-medium text-bdk/60 mb-1.5 uppercase tracking-wide">Business name</label>
+          <input id="f-biz" name="business" type="text" placeholder="Sunrise Bakery"
+            class="w-full rounded-xl border border-bdk/12 bg-bbg px-4 py-3 text-sm text-bdk placeholder:text-bdk/30 focus:outline-none focus:ring-2 focus:ring-tp/35 focus:border-tp"
+            style="transition: border-color .2s ease, box-shadow .2s ease;" />
+        </div>
+      </div>
+      <div>
+        <label for="f-email" class="block text-xs font-medium text-bdk/60 mb-1.5 uppercase tracking-wide">Email address</label>
+        <input id="f-email" name="email" type="email" required placeholder="jane@sunrisebakery.com"
+          class="w-full rounded-xl border border-bdk/12 bg-bbg px-4 py-3 text-sm text-bdk placeholder:text-bdk/30 focus:outline-none focus:ring-2 focus:ring-tp/35 focus:border-tp"
+          style="transition: border-color .2s ease, box-shadow .2s ease;" />
+      </div>
+      <div>
+        <label for="f-msg" class="block text-xs font-medium text-bdk/60 mb-1.5 uppercase tracking-wide">What do you need?</label>
+        <textarea id="f-msg" name="message" rows="4" placeholder="I need a new website and want to learn about the SEO package…"
+          class="w-full rounded-xl border border-bdk/12 bg-bbg px-4 py-3 text-sm text-bdk placeholder:text-bdk/30 focus:outline-none focus:ring-2 focus:ring-tp/35 focus:border-tp resize-none"
+          style="transition: border-color .2s ease, box-shadow .2s ease;"></textarea>
+      </div>
+      <button type="submit"
+        class="btn w-full bg-tp text-white font-semibold text-sm py-4 rounded-xl hover:bg-td focus-visible:ring-2 focus-visible:ring-tp focus-visible:ring-offset-2">
+        Send message — it's free
+      </button>
+      <p class="text-center text-[11px] text-bdk/35">No spam, no pressure. Just a conversation.</p>
+    </form>
+
+    <!-- Success state -->
+    <div id="form-success" class="hidden mt-8 bg-tl border border-tp/20 rounded-2xl p-8 text-center fade-up">
+      <div class="w-12 h-12 bg-tp rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M4 10l4.5 4.5L16 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <p class="font-display font-bold text-tp text-xl">Message sent!</p>
+      <p class="text-bdk/55 text-sm mt-1.5">We'll reply within one business day.</p>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ──────────────────────────────────────────────────────
+     FOOTER
+────────────────────────────────────────────────────── -->
+<footer class="bg-bdk py-14">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-8 mb-10">
+
+      <!-- Logo + tagline -->
+      <div>
+        <a href="#" aria-label="WebMelior home" class="flex items-center gap-2.5 mb-2">
+          <svg viewBox="0 0 46 56" width="22" height="27" fill="none" aria-hidden="true">
+            <path d="M23 54C10 42 5 33 5 22A18 18 0 0 0 23 4a18 18 0 0 0 18 18c0 11-5 20-18 32z" fill="#0F6E56"/>
+            <circle cx="23" cy="22" r="11" fill="#E1F5EE"/>
+            <polyline points="17,27 23,18 29,27" fill="none" stroke="#0F6E56" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="18,21 23,12 28,21" fill="none" stroke="#9FE1CB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="font-display font-bold text-lg tracking-tight text-white">
+            Web<span style="color:#9FE1CB;">Melior</span>
+          </span>
+        </a>
+        <p class="text-white/35 text-sm">Your local business, upgraded.</p>
+      </div>
+
+      <!-- Nav -->
+      <nav aria-label="Footer navigation" class="flex flex-wrap gap-6">
+        <a href="#services"     class="text-sm text-white/45 hover:text-white focus-visible:text-ta" style="transition:color .2s ease">Services</a>
+        <a href="#how-it-works" class="text-sm text-white/45 hover:text-white focus-visible:text-ta" style="transition:color .2s ease">How it works</a>
+        <a href="#work"         class="text-sm text-white/45 hover:text-white focus-visible:text-ta" style="transition:color .2s ease">Work</a>
+        <a href="#contact"      class="text-sm text-white/45 hover:text-white focus-visible:text-ta" style="transition:color .2s ease">Contact</a>
+      </nav>
+    </div>
+
+    <div class="border-t border-white/8 pt-8 flex flex-col md:flex-row md:justify-between gap-2">
+      <p class="text-white/25 text-xs">© 2026 WebMelior. All rights reserved.</p>
+      <p class="text-white/18 text-xs">Built with craft, shipped with care.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Nav scroll class ──────────────────────────────────
+  const nav = document.getElementById('site-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 24);
+  }, { passive: true });
+
+  // ── Mobile menu ───────────────────────────────────────
+  const menuBtn    = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = !mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden', isOpen);
+    menuBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // ── Scroll fade-in ────────────────────────────────────
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.10 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+  // ── Contact form (placeholder — wire to Resend later) ─
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('contact-form').classList.add('hidden');
+    const success = document.getElementById('form-success');
+    success.classList.remove('hidden');
+    success.classList.add('visible');
+  }
+</script>
+
+</body>
+</html>
