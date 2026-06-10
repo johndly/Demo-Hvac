@@ -105,8 +105,25 @@ node automations/[script-name].js
 npm run lint
 npm run format
 
-# Deploy to Vercel
-vercel --prod
+# Vercel CLI — deploy and manage projects (globally installed, authenticated as johndly)
+vercel                              # deploy current directory (prompts for setup)
+vercel --prod                       # deploy to production
+vercel dev                          # local dev via Vercel (alternative to serve.mjs)
+vercel ls                           # list all deployments
+vercel domains ls                   # list domains
+vercel link                         # link existing folder to a Vercel project
+vercel env add                      # add environment variable
+vercel whoami                       # check login status
+vercel login                        # re-authenticate if needed
+
+# GitHub CLI — create repo, open PRs, manage issues directly from terminal
+gh repo create [name] --public --source=. --remote=origin --push
+gh repo list                        # list your repos
+gh repo view --web                  # open current repo in browser
+gh pr create --title "..." --body "..."
+gh issue list
+gh auth status                      # check login status
+gh auth login                       # re-authenticate if needed
 ```
 
 ---
