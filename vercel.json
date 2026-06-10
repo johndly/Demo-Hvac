@@ -1,0 +1,9 @@
+{
+  "framework": null,
+  "buildCommand": null,
+  "installCommand": null,
+  "outputDirectory": "clients/home-services-demo/site",
+  "rewrites": [
+    { "source": "/", "destination": "/industries/hvac-demo.html" }
+  ]
+}
