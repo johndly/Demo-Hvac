@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Book a Free Call | WebMelior</title>
+  <meta name="description" content="Book a free 30-minute audit call with WebMelior. No pitch, no pressure — just an honest look at your online presence and what's costing you leads."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="shared.css"/>
+</head>
+<body class="grain">
+
+  <div class="announce-bar">Now serving HVAC, Plumbing &amp; Electrical — <a href="contact.html">Book a free call →</a></div>
+
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="WebMelior home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 98" width="26" height="32" aria-hidden="true"><defs><linearGradient id="wm" x1="0.25" y1="0" x2="0.75" y2="1"><stop offset="0%" stop-color="#1A9A74"/><stop offset="100%" stop-color="#0A4D3C"/></linearGradient></defs><path d="M 40,93 C 22,74 12,59 12,38 A 28,28 0 0 1 68,38 C 68,59 58,74 40,93 Z" fill="url(#wm)"/><polyline points="24,56 40,42 56,56" fill="none" stroke="#fff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="nav-logo-text">Web<span>Melior</span></span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="services/index.html">Services</a></li>
+        <li><a href="industries/hvac.html">Industries</a></li>
+        <li><a href="case-studies.html">Results</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="tel:+15550001234" class="nav-phone">(555) 000-1234</a>
+        <a href="contact.html" class="btn btn-primary" style="background:var(--green-dark);">Book a Free Call <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5h9M7 3L10.5 6.5 7 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="services/index.html">Services</a>
+      <a href="industries/hvac.html">Industries</a>
+      <a href="case-studies.html">Results</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="btn btn-primary">Book a Free Call</a>
+    </div>
+  </nav>
+
+  <!-- HERO + FORM -->
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid reveal">
+
+        <!-- FORM -->
+        <div>
+          <div class="section-badge"><span class="dot"></span>Free audit call</div>
+          <h1 class="section-title" style="font-size:clamp(2rem,4.5vw,3rem);">Let's look at your online presence — for free.</h1>
+          <p style="font-size:1rem;line-height:1.7;color:var(--text-mid);margin:12px 0 32px;">30 minutes. We audit your current site and Google presence and tell you exactly what's costing you calls — whether you hire us or not.</p>
+
+          <form id="contactForm" novalidate style="background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:32px;">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="fname">First name *</label>
+                <input type="text" id="fname" name="fname" placeholder="Marcus" required autocomplete="given-name"/>
+              </div>
+              <div class="form-group">
+                <label for="lname">Last name *</label>
+                <input type="text" id="lname" name="lname" placeholder="Johnson" required autocomplete="family-name"/>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone number *</label>
+                <input type="tel" id="phone" name="phone" placeholder="(555) 000-1234" required autocomplete="tel"/>
+              </div>
+              <div class="form-group">
+                <label for="email">Email address *</label>
+                <input type="email" id="email" name="email" placeholder="marcus@johnsonhvac.com" required autocomplete="email"/>
+              </div>
+              <div class="form-group">
+                <label for="biz">Business name *</label>
+                <input type="text" id="biz" name="biz" placeholder="Johnson Heating & Cooling" required/>
+              </div>
+              <div class="form-group">
+                <label for="industry">Trade *</label>
+                <select id="industry" name="industry" required>
+                  <option value="" disabled selected>Select your trade</option>
+                  <option>HVAC</option>
+                  <option>Plumbing</option>
+                  <option>Electrical</option>
+                  <option>Multi-trade</option>
+                  <option>Other home service</option>
+                </select>
+              </div>
+              <div class="form-group full">
+                <label for="website">Current website URL (if any)</label>
+                <input type="url" id="website" name="website" placeholder="https://yoursite.com" autocomplete="url"/>
+              </div>
+              <div class="form-group full">
+                <label for="goal">What's your #1 goal right now? *</label>
+                <select id="goal" name="goal" required>
+                  <option value="" disabled selected>Pick one</option>
+                  <option>Get more inbound calls</option>
+                  <option>Build or replace my website</option>
+                  <option>Get more Google reviews</option>
+                  <option>Rank higher on Google Maps</option>
+                  <option>Automate follow-ups / reminders</option>
+                  <option>All of the above</option>
+                </select>
+              </div>
+              <div class="form-group full">
+                <label for="message">Anything else we should know?</label>
+                <textarea id="message" name="message" placeholder="Tell us about your business, current challenges, or questions…"></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg form-submit" style="margin-top:20px;">
+              Book my free call →
+            </button>
+            <p style="font-size:12px;color:var(--text-mid);margin-top:12px;text-align:center;">We'll respond within 2 business hours to confirm your time. No spam, ever.</p>
+          </form>
+
+          <div id="formSuccess" style="display:none;background:var(--accent-light);border:1.5px solid var(--accent);border-radius:var(--radius-lg);padding:32px;text-align:center;margin-top:16px;">
+            <div style="font-size:2rem;margin-bottom:12px;">✅</div>
+            <h3 style="font-size:1.3rem;letter-spacing:-0.02em;margin-bottom:8px;">You're on the list!</h3>
+            <p style="font-size:14px;color:var(--text-mid);line-height:1.6;">We'll reach out within 2 business hours to confirm your call time. Check your spam folder if you don't hear from us.</p>
+          </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="contact-sidebar">
+          <div style="padding-bottom:20px;border-bottom:1px solid var(--cream-dark);">
+            <h3 style="font-size:1rem;letter-spacing:-0.01em;margin-bottom:6px;">What happens on the call?</h3>
+            <ul class="check-list" style="margin-top:8px;">
+              <li><span class="check">✓</span>We audit your site speed, mobile experience, and conversion setup</li>
+              <li><span class="check">✓</span>We check your Google Business Profile for quick wins</li>
+              <li><span class="check">✓</span>We tell you exactly what's costing you calls right now</li>
+              <li><span class="check">✓</span>You get a plain-English action list — no strings</li>
+            </ul>
+          </div>
+          <div class="sidebar-item">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M18 13.5c0 .4-.1.8-.3 1.2-.2.4-.5.8-.9 1.1-.7.5-1.4.8-2.2.8-.6 0-1.2-.2-1.9-.4-.7-.3-1.4-.7-2.1-1.2-.7-.5-1.4-1.2-2.1-1.9-.7-.7-1.3-1.4-1.8-2.1-.5-.7-.8-1.4-1.1-2-.3-.6-.4-1.2-.4-1.8 0-.7.2-1.4.7-2 .5-.6 1.1-1 1.9-1.2.3-.1.5-.1.7 0 .3.1.5.3.7.6l2.4 3.4c.2.3.3.5.4.8.1.2.1.4.1.6 0 .3-.1.5-.2.8l-.8.9c-.1.1-.1.3-.1.4 0 .1.1.3.2.5.4.6.8 1.2 1.4 1.8.6.6 1.1 1.1 1.8 1.5.2.1.3.2.5.2.1 0 .3 0 .4-.1l.9-.8c.2-.2.5-.3.8-.3.2 0 .4 0 .6.1.3.1.5.2.8.4l3.4 2.4c.3.2.5.4.6.7.1.2.1.5 0 .7z" stroke="currentColor" stroke-width="1.4"/></svg>
+            <p><strong style="color:var(--text-dark);">Call us directly</strong><br/><a href="tel:+15550001234">(555) 000-1234</a> · Mon–Fri 8am–6pm</p>
+          </div>
+          <div class="sidebar-item">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" stroke="currentColor" stroke-width="1.4"/><path d="M3 5l7 6 7-6" stroke="currentColor" stroke-width="1.4"/></svg>
+            <p><strong style="color:var(--text-dark);">Email us</strong><br/><a href="mailto:hello@webmelior.com">hello@webmelior.com</a></p>
+          </div>
+          <div style="background:var(--accent-light);border-radius:var(--radius);padding:16px;margin-top:4px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green-mid);margin-bottom:8px;">Our guarantee</div>
+            <p style="font-size:13px;line-height:1.6;color:var(--text-mid);">If we can't point to at least 3 things holding back your inbound calls on the audit call, we'll buy you a coffee. No kidding.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-bottom" style="max-width:1200px;margin:0 auto;border-top:none;padding:28px 24px;">
+      <a href="index.html" style="color:rgba(255,255,255,.5);text-decoration:none;font-size:13px;">← Back to home</a>
+      <span>&copy; 2026 WebMelior</span>
+      <span style="font-size:12px;">hello@webmelior.com</span>
+    </div>
+  </footer>
+
+  <div class="mobile-cta-bar">
+    <a href="tel:+15550001234" class="btn btn-primary" style="flex:1;justify-content:center;">Tap to call now</a>
+  </div>
+
+  <script>
+    const ham = document.getElementById('hamburger');
+    const menu = document.getElementById('mobileMenu');
+    ham.addEventListener('click', () => { const o = menu.classList.toggle('open'); ham.setAttribute('aria-expanded', String(o)); });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.classList.add('revealed');obs.unobserve(x.target);} }), {threshold:.08});
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const required = this.querySelectorAll('[required]');
+      let valid = true;
+      required.forEach(f => {
+        if (!f.value.trim()) { f.style.borderColor = '#e53e3e'; valid = false; }
+        else { f.style.borderColor = ''; }
+      });
+      if (!valid) return;
+      this.style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
