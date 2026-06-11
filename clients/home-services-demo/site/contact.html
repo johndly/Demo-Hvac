@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -12,7 +12,7 @@
 </head>
 <body class="grain">
 
-  <div class="announce-bar">Now serving HVAC, Plumbing &amp; Electrical — <a href="contact.html">Book a free call →</a></div>
+  <div class="announce-bar">Now serving HVAC, Plumbing &amp; Electrical — <a data-cal-link="webmelior/free-call" data-cal-config='{"layout":"popup"}' href="#">Book a free call →</a></div>
 
   <nav class="site-nav" aria-label="Main navigation">
     <div class="nav-inner">
@@ -29,7 +29,7 @@
       </ul>
       <div class="nav-right">
         <a href="tel:+15550001234" class="nav-phone">(555) 000-1234</a>
-        <a href="contact.html" class="btn btn-primary" style="background:var(--green-dark);">Book a Free Call <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5h9M7 3L10.5 6.5 7 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a data-cal-link="webmelior/free-call" data-cal-config='{"layout":"popup"}' href="#" class="btn btn-primary" style="background:var(--green-dark);">Book a Free Call <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 6.5h9M7 3L10.5 6.5 7 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -39,7 +39,7 @@
       <a href="case-studies.html">Results</a>
       <a href="pricing.html">Pricing</a>
       <a href="about.html">About</a>
-      <a href="contact.html" class="btn btn-primary">Book a Free Call</a>
+      <a data-cal-link="webmelior/free-call" data-cal-config='{"layout":"popup"}' href="#" class="btn btn-primary">Book a Free Call</a>
     </div>
   </nav>
 
@@ -182,5 +182,7 @@
       document.getElementById('formSuccess').style.display = 'block';
     });
   </script>
+<script src="https://cal.com/webmelior-zhfjhv/book-a-free-call" async></script>
 </body>
 </html>
+
