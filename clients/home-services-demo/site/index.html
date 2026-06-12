@@ -998,29 +998,46 @@
       }
     });
 
-    // Contact form → Google Sheets
-    // Replace SHEET_URL with your Apps Script Web App URL after deploying
+    // Contact form → Google Sheets via hidden iframe (bypasses CORS redirect issue)
     const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzxEKzL0883R6DsRnrE4_4taKtw0dncw2Xa8vT0yKTXoC2S0JGpYv-S1SS74kv8OvbQTg/exec';
 
-    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const btn = this.querySelector('button[type="submit"]');
       btn.disabled = true;
       btn.setAttribute('aria-busy', 'true');
       btn.textContent = 'Sending…';
 
-      try {
-        // no-cors is required for Apps Script — data is sent even though response is opaque
-        await fetch(SHEET_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          body: new URLSearchParams(new FormData(this))
-        });
-      } catch (_) { /* network errors still deliver the data */ }
+      // Hidden iframe so the POST doesn't navigate the page
+      const iframe = document.createElement('iframe');
+      iframe.name = 'gs_iframe';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
 
-      const success = document.getElementById('formSuccess');
-      success.style.display = 'flex';
-      btn.style.display = 'none';
+      // Hidden form targeting the iframe — standard POST, no CORS issues
+      const ghost = document.createElement('form');
+      ghost.method = 'POST';
+      ghost.action = SHEET_URL;
+      ghost.target = 'gs_iframe';
+      ghost.style.display = 'none';
+
+      new FormData(this).forEach((val, key) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = val;
+        ghost.appendChild(input);
+      });
+
+      document.body.appendChild(ghost);
+      ghost.submit();
+
+      setTimeout(() => {
+        document.getElementById('formSuccess').style.display = 'flex';
+        btn.style.display = 'none';
+        document.body.removeChild(ghost);
+        document.body.removeChild(iframe);
+      }, 1000);
     });
   </script>
 
