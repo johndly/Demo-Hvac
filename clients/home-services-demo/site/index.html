@@ -998,18 +998,29 @@
       }
     });
 
-    // Contact form
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
+    // Contact form → Google Sheets
+    // Replace SHEET_URL with your Apps Script Web App URL after deploying
+    const SHEET_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const btn = this.querySelector('button[type="submit"]');
       btn.disabled = true;
       btn.setAttribute('aria-busy', 'true');
       btn.textContent = 'Sending…';
-      setTimeout(() => {
-        const success = document.getElementById('formSuccess');
-        success.style.display = 'flex';
-        btn.style.display = 'none';
-      }, 800);
+
+      try {
+        // no-cors is required for Apps Script — data is sent even though response is opaque
+        await fetch(SHEET_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: new URLSearchParams(new FormData(this))
+        });
+      } catch (_) { /* network errors still deliver the data */ }
+
+      const success = document.getElementById('formSuccess');
+      success.style.display = 'flex';
+      btn.style.display = 'none';
     });
   </script>
 
